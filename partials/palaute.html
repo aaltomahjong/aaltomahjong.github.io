@@ -1,0 +1,50 @@
+<h1 class="fi-text">Palaute</h1>
+<h1 class="en-text">Feedback</h1>
+<div class="form-container">
+  <div class="fi-text small-caption">Tähdellä (*) merkity kohdat ovat pakollisia</div>
+  <div class="en-text small-caption">Fields with an asterisk (*) are mandatory</div>
+  <form id="feedback-form">
+    <label id="subject-label">
+      <div class="fi-text">Asia*</div>
+      <div class="en-text">Subject*</div>
+    </label>
+    <label id="subject-label-error"></label>
+    <select class="fi-text" name="subject">
+      <option value="Tapahtumat">Tapahtumat</option>
+      <option value="Tiedotus">Tiedotus</option>
+      <option value="Nettisivut">Nettisivut</option>
+      <option value="Misc">Muu asia</option>
+    </select>
+    <select class="en-text" name="subject">
+      <option value="Tapahtumat">Events</option>
+      <option value="Tiedotus">Info</option>
+      <option value="Nettisivut">Website</option>
+      <option value="Misc">Other</option>
+    </select>
+    <label>
+      <span class="fi-text" id="message-label">Palaute*</span>
+      <span class="en-text" id="message-label">Feedback*</span>
+      <span id="message-label-error"></span>
+      <textarea rows="8" cols="50" name="message"></textarea>
+    </label>
+    <input class="fi-text" type="submit" name="feedback" value="Lähetä" />
+    <input class="en-text" type="submit" name="feedback" value="Send" />
+  </form>
+  <img style="display: none;" src="img/load.gif" id="form-loader" alt="A loading animation for AJAX">
+</div>
+<script>
+clearErrors(['#name-label', '#email-label']);
+submitForm('#feedback-form', 'php/palaute.php', function(json_data) {
+  var data = JSON.parse(json_data);
+  clearErrors(['#subject-label', '#message-label']);
+  // Sending the feedback failed, display errors
+  if (!data.success) {
+    if (data.subjectErr) showError('#subject-label', data.subjectErr);
+    if (data.messageErr) showError('#message-label', data.messageErr);
+  }
+  else {
+    successMessage = "Palaute lähetetty onnistuneesti.";
+    window.location.hash = "/success";
+  }
+});
+</script>

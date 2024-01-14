@@ -1,0 +1,44 @@
+<h1 class="fi-text">Jäsenyyden lopettaminen</h1>
+<h1 class="en-text">Ending your membership</h1>
+<div class="form-container">
+  <div class="small-caption fi-text">Tähdellä (*) merkity kohdat ovat pakollisia</div>
+  <div class="small-caption en-text">Fields with an asterisk (*) are mandatory</div>
+  <form id="leave-form">
+    <label>
+      <span id="name-label">
+        <div class="fi-text">Nimi*</div>
+        <div class="en-text">Name*</div>
+      </span>
+      <span id="name-label-error"></span>
+      <input type="text" name="name" />
+    </label>
+    <label>
+      <span id="email-label">
+        <div class="fi-text">Sähköposti*</div>
+        <div class="en-text">Email*</div>
+      </span>
+      <span id="email-label-error"></span>
+      <input type="email" name="email" />
+    </label>
+    <input class="fi-text" type="submit" name="join" value="Lopeta jäsenyys" />
+    <input class="en-text" type="submit" name="join" value="End your membership" />
+  </form>
+  <img style="display: none;" src="img/load.gif" id="form-loader" alt="A loading animation for AJAX">
+</div>
+<script>
+clearErrors(['#name-label', '#email-label']);
+submitForm('#leave-form', 'php/eroa.php', function(json_data) { 
+  var data = JSON.parse(json_data);
+  clearErrors(['#name-label', '#email-label']);
+  // Sending the leave notification failed, display errors
+  if (!data.success) {
+    if (data.nameErr) showError('#name-label', data.nameErr);
+    if (data.emailErr) showError('#email-label', data.emailErr);
+  }
+  else {
+    successMessage = "Eroamishakemus lähetetty. Ilmoitus hakemuksen käsittelystä lähetetään sähköpostilla.";
+    window.location.hash = "/success";
+  }
+});
+</script>
+

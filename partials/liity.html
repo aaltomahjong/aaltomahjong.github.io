@@ -1,0 +1,79 @@
+<h1 class="fi-text">Jäseneksi rekisteröityminen</h1>
+<h1 class="en-text">Member registration</h1>
+<div class="form-container">
+  <div class="fi-text small-caption">Tähdellä (*) merkity kohdat ovat pakollisia</div>
+  <div class="en-text small-caption">Fields with an asterisk (*) are mandatory</div>
+  <form id="join-form">
+    <label>
+      <span id="name-label">
+        <div class="fi-text">Nimi*</div>
+        <div class="en-text">Name*</div>
+      </span>
+      <span id="name-label-error"></span>
+      <input type="text" name="name" />
+    </label>
+    <label>
+      <span id="email-label">
+        <div class="fi-text">Sähköposti*</div>
+        <div class="en-text">Email*</div>
+      </span>
+      <span id="email-label-error"></span>
+      <input type="email" name="email" />
+    </label>
+    <label>
+      <span id="hometown-label">
+        <div class="fi-text">Kotikaupunki*</div>
+        <div class="en-text">Hometown*</div>
+      </span>
+      <span id="hometown-label-error"></span>
+      <input type="text" name="hometown" />
+    </label>
+    <label id="school-label">
+      <div class="fi-text">Korkeakoulu Aallossa/Muu*</div>
+      <div class="en-text">Aalto School/Other*</div>
+    </label>
+    <label id="school-label-error"></label>
+    <select class="fi-text" name="school">
+      <option value="ASE">Insinööritieteiden korkeakoulu</option>
+      <option value="ASCT">Kemian tekniikan korkeakoulu</option>
+      <option value="ASS">Perustieteiden korkeakoulu</option>
+      <option value="ASEE">Sähkötekniikan korkeakoulu</option>
+      <option value="ASADA">Taiteiden ja suunnittelun korkeakoulu</option>
+      <option value="ASB">Kauppakorkeakoulu</option>
+      <option value="muu">Muu oppilaitos</option>
+      <option value="valmistunut">Valmistunut</option>
+    </select>
+    <select class="en-text" name="school">
+      <option value="ASE">School of Engineering</option>
+      <option value="ASCT">School of Chemical Technology</option>
+      <option value="ASS">School of Science</option>
+      <option value="ASEE">School of Electrical Engineering</option>
+      <option value="ASADA">School of Arts, Design and Architecture</option>
+      <option value="ASB">School of Business</option>
+      <option value="muu">Other educational institution</option>
+      <option value="valmistunut">Graduate</option>
+    </select>
+    <input class="fi-text" type="submit" name="join" value="Liity" />
+    <input class="en-text" type="submit" name="join" value="Join" />
+  </form>
+  <img style="display: none;" src="img/load.gif" id="form-loader" alt="A loading animation for AJAX">
+<div>
+<script>
+clearErrors(['#name-label', '#email-label', '#hometown-label', '#school-label']);
+submitForm('#join-form', 'php/liity.php', function(json_data) { 
+  var data = JSON.parse(json_data);
+  clearErrors(['#name-label', '#email-label', '#hometown-label', '#school-label']);
+   // Sending the leave notification failed, display errors
+  if (!data.success) {
+    if (data.nameErr) showError('#name-label', data.nameErr);
+    if (data.emailErr) showError('#email-label', data.emailErr);
+    if (data.hometownErr) showError('#hometown-label', data.hometownErr);
+    if (data.schoolErr) showError('#school-label', data.schoolErr);
+  }
+  else {
+    successMessage = "Liittymishakemus lähetetty. Ilmoitus hakemuksen käsittelystä lähetetään sähköpostilla.";
+    window.location.hash = "/success";
+  }
+});
+</script>
+
