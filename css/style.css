@@ -17,6 +17,10 @@ td {
   border: 1px solid #8A8A8A;
 }
 
+table.tournament-schedule td {
+  width: 140px;
+}
+
 p, table, ul, ol, dl {
   color: black;
   font-family: 'Alegreya Sans', sans-serif;
